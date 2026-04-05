@@ -3,7 +3,7 @@ session_start();
 
 // 🔒 Ensure Clerk is logged in
 if (!isset($_SESSION['staff_id']) || $_SESSION['role'] !== 'Clerk') {
-    header("Location: staff_login.php");
+    header("Location: staff_login.html");
     exit();
 }
 

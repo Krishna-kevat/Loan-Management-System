@@ -7,7 +7,7 @@ if (!isset($_SESSION['customer_id'])) {
     exit();
 }
 
-require_once '../../config.php';
+require_once '../config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $customer_id = $_SESSION['customer_id'];

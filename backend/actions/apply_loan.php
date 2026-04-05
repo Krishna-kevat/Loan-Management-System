@@ -7,7 +7,7 @@ if (!isset($_SESSION['customer_id'])) {
     exit();
 }
 
-require_once '../../config.php';
+require_once '../config.php';
 
 // Collect and validate form data
 $customer_id = $_SESSION['customer_id'];

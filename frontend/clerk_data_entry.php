@@ -3,7 +3,7 @@ session_start();
 
 // 🔒 Ensure Clerk is logged in
 if (!isset($_SESSION['staff_id']) || $_SESSION['role'] !== 'Clerk') {
-    header("Location: staff_login.php");
+    header("Location: staff_login.html");
     exit();
 }
 
@@ -105,7 +105,7 @@ $result = mysqli_query($conn, $sql);
                     <td>".(!empty($row['interest_rate']) ? $row['interest_rate'].'%' : "-")."</td>
                     <td>".(!empty($row['total_interest']) ? "₹ ".number_format($row['total_interest'], 2) : "-")."</td>
                     <td>
-                        <form method='post' action="clerk_data_entry.php">
+                        <form method='post' action='clerk_data_entry.php'>
                             <input type='hidden' name='loan_id' value='{$row['loan_id']}'>
                             <input type='number' name='interest_rate' step='0.01' min='0' placeholder='Rate' required>
                             <button type='submit'>Apply</button>

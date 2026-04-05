@@ -3,7 +3,7 @@ session_start();
 
 // 🔒 Allow only Super Admin
 if (!isset($_SESSION['super_admin_id']) || $_SESSION['role'] !== 'Super Admin') {
-    header("Location: super_admin_login.php");
+    header("Location: ../backend/auth/admin_login.php");
     exit();
 }
 

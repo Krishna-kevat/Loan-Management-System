@@ -2,7 +2,7 @@
 session_start();
 
 // Database connection
-require_once '../../config.php';
+require_once '../config.php';
 
 $login_error = ""; // store error message locally
 

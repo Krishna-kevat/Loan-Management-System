@@ -3,11 +3,11 @@ session_start();
 
 // Only Manager can access
 if(!isset($_SESSION['staff_id']) || $_SESSION['role'] !== 'Manager'){
-    header("Location: ../auth/staff_login.php");
+    header("Location: ../../frontend/staff_login.html");
     exit();
 }
 
-require_once '../../config.php';
+require_once '../config.php';
 
 // Check if staff_id is provided
 if (isset($_GET['staff_id'])) {

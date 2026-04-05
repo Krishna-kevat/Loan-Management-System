@@ -1,11 +1,11 @@
 <?php
 session_start();
 if(!isset($_SESSION['staff_id']) || $_SESSION['role'] !== 'Manager'){
-    header("Location: ../auth/staff_login.php");
+    header("Location: ../../frontend/staff_login.html");
     exit();
 }
 
-require_once '../../config.php';
+require_once '../config.php';
 
 // Get staff_id from URL
 $staff_id = intval($_GET['staff_id']);

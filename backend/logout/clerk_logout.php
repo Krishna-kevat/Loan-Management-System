@@ -6,6 +6,6 @@ session_unset();
 session_destroy();
 
 // Redirect to clerk login page
-header("Location: ../auth/staff_login.php");
+header("Location: ../../frontend/staff_login.html");
 exit();
 ?>

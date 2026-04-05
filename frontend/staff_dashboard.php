@@ -104,7 +104,7 @@ $role     = $_SESSION['role']; // saved during login
       <li><a href="staff_dashboard.php">Dashboard</a></li>
 
       <?php if ($role === 'Manager') { ?>
-        <li><a href="backend/manager/manage_staff.php">Manage Staff</a></li>
+        <li><a href="manage_staff.php">Manage Staff</a></li>
         <li><a href="manager_loan_approval.php">Approve Loans</a></li>
         <li><a href="manager_reports.php">View Reports</a></li>
         <li><a href="../backend/logout/manager_logout.php">Logout</a></li>
