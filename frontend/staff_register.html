@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purwase Staff Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      margin: 30px auto;
+      border-radius: 8px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #2980b9;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1c5d8a;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Purwase Staff Registration</h2>
+    <form id="staffForm" action="../backend/auth/staff_register.php" method="POST" novalidate>
+
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" required>
+      <div class="error" id="fullnameError"></div>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+      <div class="error" id="emailError"></div>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <div class="error" id="passwordError"></div>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+      <div class="error" id="phoneError"></div>
+
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" name="dob" required>
+      <div class="error" id="dobError"></div>
+
+      <label>Gender</label>
+      <div class="radio-group">
+        <label><input type="radio" name="gender" value="Male" required> Male</label>
+        <label><input type="radio" name="gender" value="Female"> Female</label>
+        <label><input type="radio" name="gender" value="Other"> Other</label>
+      </div>
+      <div class="error" id="genderError"></div>
+
+      <label for="address">Residential Address</label>
+      <textarea id="address" name="address" rows="3" required></textarea>
+      <div class="error" id="addressError"></div>
+
+      <label for="staff_id">Staff ID</label>
+      <input type="text" id="staff_id" name="staff_id" required>
+      <div class="error" id="staffIdError"></div>
+
+      <label for="role">Role/Designation</label>
+      <select id="role" name="role" required>
+        <option value="">-- Select --</option>
+        <option value="Loan Officer">Loan Officer</option>
+        <option value="Manager">Manager</option>
+        <option value="Clerk">Clerk</option>
+      </select>
+      <div class="error" id="roleError"></div>
+
+      <label for="salary">Monthly Salary (INR)</label>
+      <input type="number" id="salary" name="salary" required>
+      <div class="error" id="salaryError"></div>
+
+      <label for="joining_date">Joining Date</label>
+      <input type="date" id="joining_date" name="joining_date" required>
+      <div class="error" id="joiningDateError"></div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('staffForm').addEventListener('submit', function (e) {
+      let valid = true;
+
+      // Clear all errors
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+      // Full Name validation (only alphabets & spaces)
+      const fullname = document.getElementById('fullname').value.trim();
+      if (!/^[A-Za-z ]+$/.test(fullname)) {
+        document.getElementById('fullnameError').textContent = "Full name must contain only alphabets.";
+        valid = false;
+      }
+
+      // Email validation (strong format)
+      const email = document.getElementById('email').value.trim();
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById('emailError').textContent = "Please enter a valid email address.";
+        valid = false;
+      }
+
+      // Password validation (3 to 4 characters)
+      const password = document.getElementById('password').value.trim();
+      if (password.length < 3 || password.length > 4) {
+        document.getElementById('passwordError').textContent = "Password must be 3 to 4 characters long.";
+        valid = false;
+      }
+
+      // Phone validation (10 digits)
+      const phone = document.getElementById('phone').value.trim();
+      if (!/^\d{10}$/.test(phone)) {
+        document.getElementById('phoneError').textContent = "Phone number must be 10 digits.";
+        valid = false;
+      }
+
+      // DOB validation (past + must be 18+)
+      const dob = document.getElementById('dob').value;
+      const dobDate = new Date(dob);
+      const today = new Date();
+      const age = today.getFullYear() - dobDate.getFullYear();
+
+      if (!dob) {
+        document.getElementById('dobError').textContent = "Date of birth is required.";
+        valid = false;
+      } else if (dobDate >= today) {
+        document.getElementById('dobError').textContent = "DOB must be in the past.";
+        valid = false;
+      } else if (age < 18) {
+        document.getElementById('dobError').textContent = "You must be at least 18 years old.";
+        valid = false;
+      }
+
+      // Gender validation
+      const gender = document.querySelector('input[name="gender"]:checked');
+      if (!gender) {
+        document.getElementById('genderError').textContent = "Please select a gender.";
+        valid = false;
+      }
+
+      // Address validation (minimum 10 characters)
+      const address = document.getElementById('address').value.trim();
+      if (address.length < 10) {
+        document.getElementById('addressError').textContent = "Address must be at least 10 characters.";
+        valid = false;
+      }
+
+      // Staff ID validation (min 3 characters)
+      const staffId = document.getElementById('staff_id').value.trim();
+      if (!/^[A-Za-z0-9]{3,20}$/.test(staffId)) {
+        document.getElementById('staffIdError').textContent = "Staff ID must be minimum 3 alphanumeric characters.";
+        valid = false;
+      }
+
+      // Role validation
+      const role = document.getElementById('role').value;
+      if (!role) {
+        document.getElementById('roleError').textContent = "Please select a role.";
+        valid = false;
+      }
+
+      // Salary validation (number & ≥ 4 digits)
+      const salary = document.getElementById('salary').value.trim();
+      if (!/^\d{4,}$/.test(salary)) {
+        document.getElementById('salaryError').textContent = "Salary must be numeric & minimum 4 digits.";
+        valid = false;
+      }
+
+      // Joining Date validation (past + 18yrs above)
+      const joiningDate = document.getElementById('joining_date').value;
+      const joinDate = new Date(joiningDate);
+
+      if (!joiningDate) {
+        document.getElementById('joiningDateError').textContent = "Joining date is required.";
+        valid = false;
+      } else if (joinDate >= today) {
+        document.getElementById('joiningDateError').textContent = "Joining date must be in the past.";
+        valid = false;
+      } else if (joinDate.getFullYear() - dobDate.getFullYear() < 18) {
+        document.getElementById('joiningDateError').textContent = "Employee must be 18+ when joining.";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+  </script>
+
+</body>
+
+</html>

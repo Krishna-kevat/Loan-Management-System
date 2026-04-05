@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Registration - Purwase Loan Management</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f6fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 650px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1c5d8a;
+    }
+
+    .note {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    a {
+      color: #2980b9;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Purwase Customer Registration</h2>
+
+    <form id="registrationForm" action="../backend/auth/customer_register.php" method="POST" novalidate>
+
+      <label>Full Name</label>
+      <input type="text" id="fullname" name="fullname">
+      <div class="error" id="fullnameError"></div>
+
+      <label>Email Address</label>
+      <input type="email" id="email" name="email">
+      <div class="error" id="emailError"></div>
+
+      <label>Password (3-4 characters)</label>
+      <input type="password" id="password" name="password">
+      <div class="error" id="passwordError"></div>
+
+      <label>Phone Number</label>
+      <input type="text" id="phone" name="phone">
+      <div class="error" id="phoneError"></div>
+
+      <label>Date of Birth</label>
+      <input type="date" id="dob" name="dob">
+      <div class="error" id="dobError"></div>
+
+      <label>Gender</label>
+      <div class="radio-group">
+        <label><input type="radio" name="gender" value="Male"> Male</label>
+        <label><input type="radio" name="gender" value="Female"> Female</label>
+        <label><input type="radio" name="gender" value="Other"> Other</label>
+      </div>
+      <div class="error" id="genderError"></div>
+
+      <label>Residential Address</label>
+      <textarea id="address" name="address" rows="3"></textarea>
+      <div class="error" id="addressError"></div>
+
+      <label>Aadhaar Number</label>
+      <input type="text" id="aadhaar" name="aadhaar">
+      <div class="error" id="aadhaarError"></div>
+
+      <label>PAN Number</label>
+      <input type="text" id="pan" name="pan">
+      <div class="error" id="panError"></div>
+
+      <label>Annual Income (INR)</label>
+      <input type="number" id="income" name="income">
+      <div class="error" id="incomeError"></div>
+
+      <label>Employment Type</label>
+      <select id="employment" name="employment">
+        <option value="">-- Select Employment Type --</option>
+        <option value="salaried">Salaried</option>
+        <option value="self-employed">Self-Employed</option>
+        <option value="student">Student</option>
+        <option value="retired">Retired</option>
+      </select>
+      <div class="error" id="employmentError"></div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p class="note">Already have an account? <a href="customer_login.html">Login here</a></p>
+  </div>
+
+
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", function (e) {
+      let valid = true;
+
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      const fullname = fullnameInput.value.trim();
+      if (!/^[A-Za-z ]{3,}$/.test(fullname)) {
+        fullnameError.textContent = "Enter valid name (min 3 alphabets)";
+        valid = false;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailInput.value.trim())) {
+        emailError.textContent = "Enter valid email";
+        valid = false;
+      }
+
+      if (passwordInput.value.length < 3 || passwordInput.value.length > 4) {
+        passwordError.textContent = "Password must be 3-4 characters";
+        valid = false;
+      }
+
+      if (!/^\d{10}$/.test(phoneInput.value.trim())) {
+        phoneError.textContent = "Phone must be 10 digits";
+        valid = false;
+      }
+
+      const dobValue = dobInput.value;
+      if (!dobValue) {
+        dobError.textContent = "DOB required";
+        valid = false;
+      } else {
+        const age = new Date().getFullYear() - new Date(dobValue).getFullYear();
+        if (age < 18) {
+          dobError.textContent = "Age must be 18+";
+          valid = false;
+        }
+      }
+
+      if (!document.querySelector('input[name="gender"]:checked')) {
+        genderError.textContent = "Select gender";
+        valid = false;
+      }
+
+      if (addressInput.value.trim().length < 10) {
+        addressError.textContent = "Min 10 characters required";
+        valid = false;
+      }
+
+      if (!/^\d{12}$/.test(aadhaarInput.value.trim())) {
+        aadhaarError.textContent = "Aadhaar must be 12 digits";
+        valid = false;
+      }
+
+      const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+      if (!panPattern.test(panInput.value.trim())) {
+        panError.textContent = "Example: ABCDE1234F";
+        valid = false;
+      }
+
+      if (!/^\d{4,}$/.test(incomeInput.value.trim())) {
+        incomeError.textContent = "Minimum 4 digit income";
+        valid = false;
+      }
+
+      if (!employmentInput.value) {
+        employmentError.textContent = "Select employment type";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    // Element references
+    const fullnameInput = document.getElementById("fullname");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const phoneInput = document.getElementById("phone");
+    const dobInput = document.getElementById("dob");
+    const addressInput = document.getElementById("address");
+    const aadhaarInput = document.getElementById("aadhaar");
+    const panInput = document.getElementById("pan");
+    const incomeInput = document.getElementById("income");
+    const employmentInput = document.getElementById("employment");
+  </script>
+
+</body>
+
+</html>
