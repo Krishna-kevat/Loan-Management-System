@@ -37,64 +37,52 @@ mysqli_close($conn);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purwase Super Admin Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-box {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            width: 350px;
-        }
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #2c3e50;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #1a252f;
-        }
-        .error {
-            color: red;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Login | Purwase</title>
+    <link rel="stylesheet" href="../../frontend/css/style.css">
+    <script src="../../frontend/js/theme-switcher.js"></script>
 </head>
-<body>
-<div class="login-box">
-    <h2>Purwase Super Admin Login</h2>
-    <?php if ($error) echo "<p class='error'>$error</p>"; ?>
-    <form method="POST" action="">
-        <input type="text" name="username" placeholder="Enter Username" required>
-        <input type="password" name="password" placeholder="Enter Password" required>
-        <button type="submit">Login</button>
-    </form>
-</div>
+<body class="auth-page" style="min-height: 100vh; display: flex; flex-direction: column;">
+
+<header style="justify-content: flex-end; padding: 1rem 2rem; background: transparent; border: none; backdrop-filter: none;">
+    <button class="theme-toggle" aria-label="Toggle Theme">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+    </button>
+</header>
+
+<main style="flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem;">
+
+    <div class="card shadow-2xl" style="width: 100%; max-width: 450px; padding: 3rem;">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h2 style="color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem;">Admin Access</h2>
+            <p style="color: var(--text-muted);">Enter credentials for global system oversight.</p>
+        </div>
+
+        <?php if ($error): ?>
+            <div class="alert alert-error" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2);">
+                <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Super admin username" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 2.5rem;">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">Authorize Login</button>
+        </form>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="../../frontend/index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">&larr; Return to Public Portal</a>
+        </div>
+    </div>
+
+</main>
 </body>
 </html>
+

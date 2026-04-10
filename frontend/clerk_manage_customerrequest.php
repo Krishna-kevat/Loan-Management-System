@@ -45,97 +45,119 @@ $result = mysqli_query($conn, $sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purwase Clerk - Customer Support Requests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Support Requests | Purwase Clerk</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body { font-family: Arial, sans-serif; background:#f4f7fa; margin:0; padding:20px; }
-        .container { max-width:1200px; margin:auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-        h2 { text-align:center; color:#2c3e50; }
-        table { width:100%; border-collapse:collapse; margin-top:20px; }
-        th, td { border:1px solid #ccc; padding:10px; text-align:left; vertical-align: top; }
-        th { background:#34495e; color:white; }
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-open { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .status-progress { background: rgba(158, 158, 11, 0.1); color: #f59e0b; }
+        .status-closed { background: rgba(16, 185, 129, 0.1); color: #10b981; }
         
-        /* ✅ Button Styling */
-        a.action {
-            padding: 6px 10px;
+        .action-btn {
+            padding: 0.5rem;
             border-radius: 4px;
             text-decoration: none;
-            font-size: 13px;
-            white-space: nowrap;
-            display: inline-block;
-            text-align: center;
-            min-width: 90px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
         }
-        a.progress { background: orange; color: white; }
-        a.close { background: green; color: white; }
-        a.delete { background: red; color: white; }
-        a:hover { opacity:0.85; }
-
-        /* ✅ Status Colors */
-        .status-open { color: red; font-weight: bold; }
-        .status-progress { color: orange; font-weight: bold; }
-        .status-closed { color: green; font-weight: bold; }
+        .btn-progress { background: #f59e0b; color: white; }
+        .btn-close { background: #10b981; color: white; }
+        .btn-delete { background: #ef4444; color: white; }
+        .action-btn:hover { filter: brightness(1.1); }
     </style>
+    <script src="js/theme-switcher.js"></script>
 </head>
 <body>
-<div class="container">
-    <h2>Purwase Clerk - Customer Support Requests</h2>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Customer</th>
-            <th>Email</th>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Action</th>
-        </tr>
+<div class="layout-wrapper">
+  <?php include 'includes/sidebar.php'; ?>
+  
+  <main class="main-content">
 
-        <?php
-        if (!$result || mysqli_num_rows($result) == 0) {
-            echo "<tr><td colspan='8' style='text-align:center;'>No Support Requests Found</td></tr>";
-        } else {
-            while ($row = mysqli_fetch_assoc($result)) {
-                // ✅ Status color logic
-                $status_class = "";
-                if ($row['status'] === "Open") {
-                    $status_class = "status-open";
-                } elseif ($row['status'] === "In Progress") {
-                    $status_class = "status-progress";
-                } elseif ($row['status'] === "Closed") {
-                    $status_class = "status-closed";
+
+  <div class="container" style="max-width: 1400px;">
+    <div class="hero" style="padding: 2rem 0; text-align: left;">
+      <h2>Customer Support Requests</h2>
+      <p style="color: var(--text-muted);">Manage and respond to customer inquiries and support tickets.</p>
+    </div>
+
+    <div class="table-container shadow-xl">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Details</th>
+                    <th>Enquiry Details</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (!$result || mysqli_num_rows($result) == 0) {
+                    echo "<tr><td colspan='6' style='text-align:center; padding: 4rem; color: var(--text-muted);'>No Support Requests Found</td></tr>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $statusClassRaw = strtolower(str_replace(' ', '', $row['status']));
+                        $statusClass = "status-" . $statusClassRaw;
+                        echo "<tr>
+                            <td style='font-weight: 600; color: var(--secondary);'>#{$row['support_id']}</td>
+                            <td>
+                                <div style='font-weight: 600;'>".htmlspecialchars($row['fullname'])."</div>
+                                <div style='font-size: 0.8rem; color: var(--text-muted);'>".htmlspecialchars($row['email'])."</div>
+                            </td>
+                            <td>
+                                <div style='font-weight: 600; margin-bottom: 0.25rem;'>".htmlspecialchars($row['subject'])."</div>
+                                <div style='font-size: 0.85rem; color: var(--text-muted); max-width: 400px;'>".htmlspecialchars($row['message'])."</div>
+                            </td>
+                            <td>
+                                <span class='badge $statusClass'>{$row['status']}</span>
+                            </td>
+                            <td style='white-space: nowrap; color: var(--text-muted); font-size: 0.85rem;'>
+                                ".date("d M Y, H:i", strtotime($row['created_at']))."
+                            </td>
+                            <td>
+                                <div style='display:flex; gap:0.5rem;'>";
+                                
+                                if ($row['status'] === 'Open') {
+                                    echo "<a class='action-btn btn-progress' href='clerk_manage_customerrequest.php?action=progress&support_id={$row['support_id']}'>Work</a>";
+                                }
+                                if ($row['status'] === 'Open' || $row['status'] === 'In Progress') {
+                                    echo "<a class='action-btn btn-close' href='clerk_manage_customerrequest.php?action=close&support_id={$row['support_id']}'>Resolve</a>";
+                                }
+                                
+                                echo "<a class='action-btn btn-delete' href='clerk_manage_customerrequest.php?action=delete&support_id={$row['support_id']}' onclick=\"return confirm('Delete this request?');\">Delete</a>";
+                                
+                        echo "</div></td></tr>";
+                    }
                 }
+                mysqli_close($conn);
+                ?>
+            </tbody>
+        </table>
+    </div>
+  </div>
 
-                echo "<tr>
-                    <td>{$row['support_id']}</td>
-                    <td>".htmlspecialchars($row['fullname'])."</td>
-                    <td>".htmlspecialchars($row['email'])."</td>
-                    <td>".htmlspecialchars($row['subject'])."</td>
-                    <td>".htmlspecialchars($row['message'])."</td>
-                    <td class='$status_class'>{$row['status']}</td>
-                    <td>{$row['created_at']}</td>
-                    <td>
-                        <div style='display:flex; gap:6px; flex-wrap:wrap;'>
-                ";
+  <footer>
+    <p>&copy; 2025 Purwase Company | Support Management Portal</p>
+  </footer>
 
-                // ✅ Show actions based on status
-                if ($row['status'] === 'Open') {
-                    echo "<a class='action progress' href='clerk_manage_customerrequest.php?action=progress&support_id={$row['support_id']}'>In Progress</a>";
-                }
-                if ($row['status'] === 'Open' || $row['status'] === 'In Progress') {
-                    echo "<a class='action close' href='clerk_manage_customerrequest.php?action=close&support_id={$row['support_id']}'>Close</a>";
-                }
-
-                // Always allow delete
-                echo "<a class='action delete' href='clerk_manage_customerrequest.php?action=delete&support_id={$row['support_id']}' onclick=\"return confirm('Are you sure you want to delete this support request?');\">Delete</a>";
-
-                echo "</div></td></tr>";
-            }
-        }
-        mysqli_close($conn);
-        ?>
-    </table>
+  </main>
 </div>
+
 </body>
 </html>
+

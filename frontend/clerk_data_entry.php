@@ -55,68 +55,117 @@ $result = mysqli_query($conn, $sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purwase Clerk - Loan Data Entry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Data Entry | Purwase Clerk</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body { font-family: Arial, sans-serif; background:#f4f7fa; margin:0; padding:20px; }
-        .container { max-width:1200px; margin:auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-        h2 { text-align:center; color:#2c3e50; }
-        table { width:100%; border-collapse:collapse; margin-top:20px; font-size:14px; }
-        th, td { border:1px solid #ccc; padding:8px; text-align:center; }
-        th { background:#34495e; color:white; }
-        form { display:flex; justify-content:center; align-items:center; gap:6px; }
-        input[type="number"] { width:80px; padding:4px; }
-        button { padding:6px 12px; border:none; border-radius:4px; background:blue; color:white; cursor:pointer; }
-        button:hover { opacity:0.8; }
+        .input-mini {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 0.5rem;
+            border-radius: 4px;
+            width: 80px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .input-mini:focus {
+            border-color: var(--secondary);
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
     </style>
+    <script src="js/theme-switcher.js"></script>
 </head>
 <body>
-<div class="container">
-    <h2>Purwase Clerk - Loan Data Entry</h2>
 
-    <table>
-        <tr>
-            <th>Loan ID</th>
-            <th>Customer</th>
-            <th>Email</th>
-            <th>Loan Type</th>
-            <th>Amount</th>
-            <th>Tenure (Months)</th>
-            <th>Purpose</th>
-            <th>Status</th>
-            <th>Interest Rate (%)</th>
-            <th>Total Interest</th>
-            <th>Action</th>
-        </tr>
+<div class="layout-wrapper">
+  <?php include 'includes/sidebar.php'; ?>
+  
+  <main class="main-content">
 
-        <?php
-        if (!$result || mysqli_num_rows($result) == 0) {
-            echo "<tr><td colspan='11' style='text-align:center;'>No Loan Applications Found</td></tr>";
-        } else {
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>
-                    <td>{$row['loan_id']}</td>
-                    <td>".htmlspecialchars($row['fullname'])."</td>
-                    <td>".htmlspecialchars($row['email'])."</td>
-                    <td>{$row['loan_type']}</td>
-                    <td>₹ ".number_format($row['amount'], 2)."</td>
-                    <td>{$row['tenure']}</td>
-                    <td>{$row['purpose']}</td>
-                    <td>{$row['status']}</td>
-                    <td>".(!empty($row['interest_rate']) ? $row['interest_rate'].'%' : "-")."</td>
-                    <td>".(!empty($row['total_interest']) ? "₹ ".number_format($row['total_interest'], 2) : "-")."</td>
-                    <td>
-                        <form method='post' action='clerk_data_entry.php'>
-                            <input type='hidden' name='loan_id' value='{$row['loan_id']}'>
-                            <input type='number' name='interest_rate' step='0.01' min='0' placeholder='Rate' required>
-                            <button type='submit'>Apply</button>
-                        </form>
-                    </td>
-                </tr>";
-            }
-        }
-        mysqli_close($conn);
-        ?>
-    </table>
-</div>
+
+  <div class="container" style="max-width: 1400px;">
+    <div class="hero" style="padding: 2rem 0; text-align: left;">
+      <h2>Loan Data Entry</h2>
+      <p style="color: var(--text-muted);">Process interest rates for pending and approved loan applications.</p>
+    </div>
+
+    <div class="table-container shadow-xl">
+        <table>
+            <thead>
+                <tr>
+                    <th>Loan ID</th>
+                    <th>Customer Details</th>
+                    <th>Loan Details</th>
+                    <th>Purpose</th>
+                    <th>Status</th>
+                    <th>Financials</th>
+                    <th>Interest Rate (%)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (!$result || mysqli_num_rows($result) == 0) {
+                    echo "<tr><td colspan='8' style='text-align:center; padding: 4rem; color: var(--text-muted);'>No Loan Applications Found</td></tr>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $statusClass = strtolower($row['status']);
+                        echo "<tr>
+                            <td style='font-weight: 600; color: var(--secondary);'>#{$row['loan_id']}</td>
+                            <td>
+                                <div style='font-weight: 600;'>".htmlspecialchars($row['fullname'])."</div>
+                                <div style='font-size: 0.8rem; color: var(--text-muted);'>".htmlspecialchars($row['email'])."</div>
+                            </td>
+                            <td>
+                                <div style='font-weight: 600;'>{$row['loan_type']}</div>
+                                <div style='font-size: 0.8rem; color: var(--text-muted);'>₹".number_format($row['amount'], 2)." | {$row['tenure']} Mo</div>
+                            </td>
+                            <td style='max-width: 200px; font-size: 0.85rem; color: var(--text-muted);'>".htmlspecialchars($row['purpose'])."</td>
+                            <td>
+                                <span style='font-weight: 600; color: ".($statusClass == 'approved' ? '#4ade80' : 'var(--secondary)').";'>
+                                    {$row['status']}
+                                </span>
+                            </td>
+                            <td>";
+                                if (!empty($row['interest_rate'])) {
+                                    echo "<div style='color: var(--text-main);'>{$row['interest_rate']}%</div>
+                                          <div style='font-size: 0.8rem; color: var(--text-muted);'>Int: ₹".number_format($row['total_interest'], 2)."</div>";
+                                } else {
+                                    echo "<span style='color: var(--text-muted);'>Not Set</span>";
+                                }
+                            echo "</td>
+                            <td>
+                                <form method='post' action='clerk_data_entry.php' style='display: flex; gap: 0.5rem; justify-content: center;'>
+                                    <input type='hidden' name='loan_id' value='{$row['loan_id']}'>
+                                    <input type='number' name='interest_rate' step='0.01' min='0' placeholder='Rate' required class='input-mini'>
+                            </td>
+                            <td>
+                                    <button type='submit' class='btn btn-secondary' style='padding: 0.5rem 1rem; border-radius: 4px;'>Apply</button>
+                                </form>
+                            </td>
+                        </tr>";
+                    }
+                }
+                mysqli_close($conn);
+                ?>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Purwase Company | Clerk Management Portal</p>
+  </footer>
+
 </body>
 </html>
+
+</div>
+  </main>
+</div>
+
+</body>
+</html>
+

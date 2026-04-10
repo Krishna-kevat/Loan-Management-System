@@ -51,24 +51,25 @@ foreach ($required_docs as $doc) {
         continue;
     }
 
-    $document_path = $upload_dir . time() . "_" . $doc . "." . $ext;
+    $db_save_path  = "uploads/" . time() . "_" . $doc . "." . $ext;
+    $physical_path = $upload_dir . time() . "_" . $doc . "." . $ext;
 
-    if (move_uploaded_file($document_tmp, $document_path)) {
-        $uploaded_files[$doc] = $document_path;
+    if (move_uploaded_file($document_tmp, $physical_path)) {
+        $uploaded_files[$doc] = $db_save_path;
     } else {
         $errors[] = "Failed to upload " . ucfirst($doc) . ".";
     }
 }
 
+
 // Stop if errors exist
 if (!empty($errors)) {
-    foreach ($errors as $err) {
-        echo "❌ " . $err . "<br>";
-    }
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'error', 'message' => implode(" ", $errors)]);
     exit();
 }
 
-// Save docs JSON (or use a separate table for each document)
+// Save docs JSON
 $documents_json = json_encode($uploaded_files);
 
 // Insert into database
@@ -77,12 +78,13 @@ $sql = "INSERT INTO loan_application
 VALUES 
 ('$customer_id', '$loan_type', '$amount', '$tenure', '$purpose', '$income', '$documents_json', 'Submitted', NOW())";
 
+header('Content-Type: application/json');
 if (mysqli_query($conn, $sql)) {
-    echo "<h2>✅ Loan Application Submitted Successfully!</h2>";
-    echo "<p><a href=\"../../frontend/my_loans.php\">View My Applications</a></p>";
+    echo json_encode(['status' => 'success', 'message' => 'Loan Application Submitted Successfully!']);
 } else {
-    echo "❌ Error: " . mysqli_error($conn);
+    echo json_encode(['status' => 'error', 'message' => 'Database Error: ' . mysqli_error($conn)]);
 }
 
 mysqli_close($conn);
 ?>
+

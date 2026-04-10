@@ -31,93 +31,97 @@ mysqli_close($conn);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purwase My Profile</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f7fa;
-      color: #333;
-    }
-
-    header {
-      background: #2c3e50;
-      padding: 15px;
-      color: white;
-      text-align: center;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      color: #2980b9;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    table th, table td {
-      text-align: left;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    table th {
-      background: #2980b9;
-      color: white;
-      width: 30%;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 15px;
-      background: #2980b9;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .btn:hover {
-      background: #1c5d8a;
-    }
-  </style>
+  <title>My Profile | Purwase</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme-switcher.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>Purwase Customer Profile</h1>
-</header>
+  <header>
+    <h1>Purwase</h1>
+    <nav>
+      <ul>
+        <li><a href="customer_dashboard.php">Dashboard</a></li>
+        <li><a href="apply_loan.html">Apply Loan</a></li>
+        <li><a href="my_loans.php">My Loans</a></li>
+        <li><a href="customer_profile.php">Profile</a></li>
+        <li><a href="customer_support.html">Support</a></li>
+        <li><a href="../backend/logout/customer_logout.php" style="color: var(--accent);">Logout</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Toggle Theme">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-<div class="container">
-  <h2>Welcome, <?php echo htmlspecialchars($customer['fullname']); ?> 👋</h2>
+  <div class="container" style="max-width: 900px; margin-top: 4rem; margin-bottom: 4rem;">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="margin: 0;">My Profile</h2>
+        <a href="customer_dashboard.php" class="btn btn-secondary">⬅ Back</a>
+      </div>
 
-  <table>
-    <tr><th>Full Name</th><td><?php echo htmlspecialchars($customer['fullname']); ?></td></tr>
-    <tr><th>Email</th><td><?php echo htmlspecialchars($customer['email']); ?></td></tr>
-    <tr><th>Phone</th><td><?php echo htmlspecialchars($customer['phone']); ?></td></tr>
-    <tr><th>Date of Birth</th><td><?php echo htmlspecialchars($customer['dob']); ?></td></tr>
-    <tr><th>Gender</th><td><?php echo htmlspecialchars($customer['gender']); ?></td></tr>
-    <tr><th>Address</th><td><?php echo htmlspecialchars($customer['address']); ?></td></tr>
-    <tr><th>Aadhaar</th><td><?php echo htmlspecialchars($customer['aadhaar']); ?></td></tr>
-    <tr><th>PAN</th><td><?php echo htmlspecialchars($customer['pan']); ?></td></tr>
-    <tr><th>Annual Income</th><td><?php echo htmlspecialchars($customer['income']); ?></td></tr>
-    <tr><th>Employment Type</th><td><?php echo htmlspecialchars($customer['employment']); ?></td></tr>
-  </table>
+      <div class="table-container">
+        <table>
+          <tbody>
+            <tr>
+              <th>Full Name</th>
+              <td style="font-weight: 600; color: var(--secondary);"><?php echo htmlspecialchars($customer['fullname']); ?></td>
+            </tr>
+            <tr>
+              <th>Email Address</th>
+              <td><?php echo htmlspecialchars($customer['email']); ?></td>
+            </tr>
+            <tr>
+              <th>Phone Number</th>
+              <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+            </tr>
+            <tr>
+              <th>Date of Birth</th>
+              <td><?php echo htmlspecialchars($customer['dob']); ?></td>
+            </tr>
+            <tr>
+              <th>Gender</th>
+              <td><?php echo htmlspecialchars($customer['gender']); ?></td>
+            </tr>
+            <tr>
+              <th>Residential Address</th>
+              <td><?php echo htmlspecialchars($customer['address']); ?></td>
+            </tr>
+            <tr>
+              <th>Aadhaar Number</th>
+              <td><?php echo htmlspecialchars($customer['aadhaar']); ?></td>
+            </tr>
+            <tr>
+              <th>PAN Number</th>
+              <td><?php echo htmlspecialchars($customer['pan']); ?></td>
+            </tr>
+            <tr>
+              <th>Annual Income</th>
+              <td style="font-weight: 600;">₹<?php echo number_format($customer['income']); ?></td>
+            </tr>
+            <tr>
+              <th>Employment Type</th>
+              <td style="text-transform: capitalize;"><?php echo htmlspecialchars($customer['employment']); ?></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <a href="customer_dashboard.php" class="btn">⬅ Back to Dashboard</a>
-</div>
+      <div style="margin-top: 2rem; text-align: center;">
+        <p style="color: var(--text-muted); font-size: 0.875rem;">To update your profile information, please contact our support team.</p>
+        <a href="customer_support.html" class="btn btn-primary" style="margin-top: 1rem;">Contact Support</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Purwase Company | Customer Profile</p>
+  </footer>
 
 </body>
 </html>
+

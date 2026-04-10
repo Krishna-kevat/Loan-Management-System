@@ -12,6 +12,7 @@ $aadhaar    = $_POST['aadhaar'];
 $pan        = $_POST['pan'];
 $income     = $_POST['income'];
 $employment = $_POST['employment'];
+$gender     = $_POST['gender'];
 
 
 // 🔐 Hash the password
@@ -24,13 +25,14 @@ VALUES
 ('$fullname', '$email', '$hashed_password', '$phone', '$dob', '$gender', '$address', '$aadhaar', '$pan', '$income', '$employment')";
 $r = mysqli_query($conn, $sql);
 // Execute query
+header('Content-Type: application/json');
 if ($r) {
-    echo "<h2> Registration Successful!</h2>";
-    echo "<p><a href=\"../../frontend/customer_login.html\">Click here to login</a></p>";
+    echo json_encode(['status' => 'success', 'message' => 'Registration Successful!']);
 } else {
-    echo " Error: " . mysqli_error($conn);
+    echo json_encode(['status' => 'error', 'message' => 'Registration Failed: ' . mysqli_error($conn)]);
 }
 
-// Close connection
 mysqli_close($conn);
 ?>
+
+

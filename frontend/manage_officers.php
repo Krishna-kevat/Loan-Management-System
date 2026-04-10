@@ -17,44 +17,65 @@ $result = mysqli_query($conn, "SELECT * FROM staff_registration WHERE role='Loan
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purwase Approved Loan Officers</title>
-    <style>
-        body { font-family: Arial, sans-serif; background:#f4f7fa; margin:0; padding:20px; }
-        .container { max-width:1000px; margin:auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-        h2 { text-align:center; color:#2c3e50; }
-        table { width:100%; border-collapse:collapse; margin-top:20px; }
-        th, td { border:1px solid #ccc; padding:10px; text-align:left; }
-        th { background:#34495e; color:white; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Officers | Purwase Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme-switcher.js"></script>
 </head>
 <body>
-<div class="container">
-    <h2>Super Admin - Purwase Approved Loan Officers</h2>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Status</th>
-        </tr>
+<div class="layout-wrapper">
+  <?php include 'includes/sidebar.php'; ?>
+  
+  <main class="main-content">
 
-        <?php
-        if (mysqli_num_rows($result) == 0) {
-            echo "<tr><td colspan='4' style='text-align:center;'>No Approved Loan Officers Found</td></tr>";
-        } else {
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>
-                    <td>{$row['staff_id']}</td>
-                    <td>".htmlspecialchars($row['fullname'])."</td>
-                    <td>".htmlspecialchars($row['email'])."</td>
-                    <td>{$row['status']}</td>
-                </tr>";
-            }
-        }
-        mysqli_close($conn);
-        ?>
-    </table>
+
+  <div class="container" style="max-width: 1200px;">
+    <div class="hero" style="padding: 2rem 0; text-align: left;">
+      <h2>Approved Loan Officers</h2>
+      <p style="color: var(--text-muted);">View all authorized loan officers who are currently active in the system.</p>
+    </div>
+
+    <div class="table-container shadow-xl">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Officer Name</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (mysqli_num_rows($result) == 0) {
+                    echo "<tr><td colspan='4' style='text-align:center; padding: 4rem; color: var(--text-muted);'>No Approved Loan Officers Found</td></tr>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>
+                            <td style='font-weight: 600; color: var(--secondary);'>#{$row['staff_id']}</td>
+                            <td style='font-weight: 600;'>".htmlspecialchars($row['fullname'])."</td>
+                            <td>".htmlspecialchars($row['email'])."</td>
+                            <td>
+                                <span style='font-weight: 600; color: #4ade80;'>{$row['status']}</span>
+                            </td>
+                        </tr>";
+                    }
+                }
+                mysqli_close($conn);
+                ?>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; <?php echo date("Y"); ?> Purwase Company | Administrative Oversight</p>
+  </footer>
+
+  </main>
 </div>
+
 </body>
 </html>
+

@@ -3,145 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purwase Loan Management</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    nav {
-      margin-top: 15px;
-    }
-    nav label {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-    nav select {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      margin: 5px;
-    }
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: 20px auto;
-    }
-    h2 {
-      color: #2c3e50;
-      border-bottom: 2px solid #2c3e50;
-      padding-bottom: 5px;
-    }
-    .loan-types, .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-    }
-    .card h3 {
-      margin-top: 0;
-      color: #2980b9;
-    }
-    footer {
-      background: #2c3e50;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-    }
-  </style>
+  <title>Purwase | Premium Loan Management</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme-switcher.js"></script>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to Purwase Loan Management</h1>
-    <p>Manage all your loans easily and securely</p>
+    <h1>Purwase</h1>
     <nav>
-      <!-- Login Dropdown -->
-      <label for="login">Login as:</label>
-      <select id="login" onchange="location = this.value;">
-        <option value="">-- Select --</option>
-        <option value="customer_login.html">Customer</option>
-        <option value="staff_login.html">Staff</option>
-        <option value="../backend/auth/admin_login.php">Admin</option>
-      </select>
+      <ul>
+        <li>
+          <div class="form-group" style="margin-bottom: 0; display: flex; align-items: center; gap: 10px;">
+            <label for="login" style="margin-bottom: 0; white-space: nowrap;">Login as:</label>
+            <select id="login" onchange="if(this.value) location = this.value;">
+              <option value="">-- Select --</option>
+              <option value="customer_login.html">Customer</option>
+              <option value="staff_login.html">Staff</option>
+              <option value="../backend/auth/admin_login.php">Admin</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <a href="customer_register.html" class="btn btn-sm" style="text-decoration: none;">Register</a>
+        </li>
 
-      <!-- Registration Dropdown -->
-      <label for="register">Register as:</label>
-      <select id="register" onchange="location = this.value;">
-        <option value="">-- Select --</option>
-        <option value="customer_register.html">Customer</option>
-        <option value="staff_register.html">Staff</option>
-      </select>
+        <li>
+          <button class="theme-toggle" aria-label="Toggle Theme">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </button>
+        </li>
+      </ul>
     </nav>
   </header>
 
   <div class="container">
+    <section class="hero">
+      <h2>Transforming Your Financial Future</h2>
+      <p style="color: var(--text-muted); font-size: 1.25rem; max-width: 600px; margin: 0 auto;">Manage all your loans with a premium, secure, and modern experience.</p>
+    </section>
+
     <!-- Loan Types -->
-    <h2>Types of Loans We Offer</h2>
-    <div class="loan-types">
+    <h2 style="margin-top: 3rem; text-align: center;">Types of Loans We Offer</h2>
+    <div class="grid">
       <div class="card">
-        <h3>Personal Loan</h3>
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Personal Loan</h3>
         <p>Quick and easy loans for personal needs like travel, wedding, or emergency expenses.</p>
       </div>
       <div class="card">
-        <h3>Home Loan</h3>
+        <h3 style="color: var(--secondary); margin-bottom: 1rem;">Home Loan</h3>
         <p>Buy your dream home with our affordable interest rates and flexible tenure options.</p>
       </div>
       <div class="card">
-        <h3>Education Loan</h3>
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Education Loan</h3>
         <p>Secure your future with loans for higher studies in India or abroad at low interest rates.</p>
       </div>
       <div class="card">
-        <h3>Business Loan</h3>
+        <h3 style="color: var(--secondary); margin-bottom: 1rem;">Business Loan</h3>
         <p>Expand your business operations with easy approval and minimum documentation.</p>
       </div>
       <div class="card">
-        <h3>Vehicle Loan</h3>
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Vehicle Loan</h3>
         <p>Drive your dream car or bike with our low-interest auto loans and flexible repayment plans.</p>
       </div>
     </div>
 
     <!-- Services -->
-    <h2>Our Services</h2>
-    <div class="services">
+    <h2 style="margin-top: 5rem; text-align: center;">Our Services</h2>
+    <div class="grid">
       <div class="card">
-        <h3>Fast Loan Approval</h3>
+        <h3 style="color: var(--secondary); margin-bottom: 1rem;">Fast Loan Approval</h3>
         <p>Get quick approval for your loan applications with minimal paperwork.</p>
       </div>
       <div class="card">
-        <h3>Easy Document Upload</h3>
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Easy Document Upload</h3>
         <p>Upload KYC documents securely through your profile dashboard.</p>
       </div>
       <div class="card">
-        <h3>Track Loan Status</h3>
+        <h3 style="color: var(--secondary); margin-bottom: 1rem;">Track Loan Status</h3>
         <p>Check real-time updates about your loan approval, disbursement, and repayments.</p>
       </div>
       <div class="card">
-        <h3>Customer Support</h3>
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Customer Support</h3>
         <p>24/7 support team available to answer your queries and assist you.</p>
       </div>
       <div class="card">
-        <h3>Flexible Tenure</h3>
+        <h3 style="color: var(--secondary); margin-bottom: 1rem;">Flexible Tenure</h3>
         <p>Choose a repayment plan that suits your financial condition with flexible EMI options.</p>
       </div>
     </div>
@@ -153,3 +101,4 @@
 
 </body>
 </html>
+

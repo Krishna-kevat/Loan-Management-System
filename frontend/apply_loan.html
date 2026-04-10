@@ -1,205 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apply for Purwase Loan</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fa;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      width: 60%;
-      margin: 40px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      color: #34495e;
-      margin-bottom: 20px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-      color: #333;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    textarea {
-      resize: none;
-    }
-
-    .error {
-      color: red;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background: #34495e;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #2c3e50;
-    }
-  </style>
+  <title>Apply for Loan | Purwase</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme-switcher.js"></script>
 </head>
-
 <body>
 
-  <div class="container">
-    <h2>Purwase Loan Application Form</h2>
-    <form id="loanForm" action="../backend/actions/apply_loan.php" method="POST" enctype="multipart/form-data">
+  <header>
+    <h1>Purwase</h1>
+    <nav>
+      <ul>
+        <li><a href="customer_dashboard.php">Dashboard</a></li>
+        <li><a href="apply_loan.html">Apply Loan</a></li>
+        <li><a href="my_loans.php">My Loans</a></li>
+        <li><a href="customer_profile.php">Profile</a></li>
+        <li><a href="customer_support.html">Support</a></li>
+        <li><a href="../backend/logout/customer_logout.php" style="color: var(--accent);">Logout</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Toggle Theme">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-      <label for="loan_type">Loan Type</label>
-      <select id="loan_type" name="loan_type">
-        <option value="">-- Select Loan Type --</option>
-        <option value="Personal Loan">Personal Loan</option>
-        <option value="Home Loan">Home Loan</option>
-        <option value="Car Loan">Car Loan</option>
-        <option value="Education Loan">Education Loan</option>
-        <option value="Business Loan">Business Loan</option>
-      </select>
-      <div class="error" id="loanTypeError"></div>
+  <div class="container" style="max-width: 800px; margin-top: 4rem; margin-bottom: 4rem;">
+    <div class="card">
+      <h2 style="text-align: center; margin-bottom: 2rem;">Loan Application Form</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Please fill in the details below to apply for a new loan.</p>
+      
+      <form id="loanForm" action="../backend/actions/apply_loan.php" method="POST" enctype="multipart/form-data" novalidate>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 0;">
+          <div class="form-group">
+            <label for="loan_type">Loan Type</label>
+            <select id="loan_type" name="loan_type">
+              <option value="">-- Select --</option>
+              <option value="Personal Loan">Personal Loan</option>
+              <option value="Home Loan">Home Loan</option>
+              <option value="Car Loan">Car Loan</option>
+              <option value="Education Loan">Education Loan</option>
+              <option value="Business Loan">Business Loan</option>
+            </select>
+            <div class="error" id="loanTypeError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label for="amount">Loan Amount (INR)</label>
-      <input type="number" id="amount" name="amount">
-      <div class="error" id="amountError"></div>
+          <div class="form-group">
+            <label for="amount">Loan Amount (INR)</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter Loan Amount">
+            <div class="error" id="amountError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label for="tenure">Tenure (in months)</label>
-      <input type="number" id="tenure" name="tenure">
-      <div class="error" id="tenureError"></div>
+          <div class="form-group">
+            <label for="tenure">Tenure (in months)</label>
+            <input type="number" id="tenure" name="tenure" placeholder="Tenure (Months)">
+            <div class="error" id="tenureError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label for="purpose">Purpose of Loan</label>
-      <textarea id="purpose" name="purpose" rows="3"></textarea>
-      <div class="error" id="purposeError"></div>
+          <div class="form-group">
+            <label for="income">Annual Income (INR)</label>
+            <input type="number" id="income" name="income" placeholder="Annual Income">
+            <div class="error" id="incomeError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
+        </div>
 
-      <label for="income">Annual Income (INR)</label>
-      <input type="number" id="income" name="income">
-      <div class="error" id="incomeError"></div>
+        <div class="form-group">
+          <label for="purpose">Purpose of Loan</label>
+          <textarea id="purpose" name="purpose" rows="3" placeholder="Describe the purpose of your loan application"></textarea>
+          <div class="error" id="purposeError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+        </div>
 
-      <h3>Upload Required Documents (JPG/PNG/PDF)</h3>
+        <h3 style="margin: 2rem 0 1rem; color: var(--secondary);">Required Documents</h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 2rem;">Accepted formats: JPG, PNG, PDF</p>
 
-      <label>Aadhar Card</label>
-      <input type="file" name="documents[aadhar]" accept=".pdf,.jpg,.jpeg,.png">
-      <div class="error" id="aadharError"></div>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 0;">
+          <div class="form-group">
+            <label>Aadhar Card</label>
+            <input type="file" name="documents[aadhar]" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="error" id="aadharError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label>PAN Card</label>
-      <input type="file" name="documents[pan]" accept=".pdf,.jpg,.jpeg,.png">
-      <div class="error" id="panError"></div>
+          <div class="form-group">
+            <label>PAN Card</label>
+            <input type="file" name="documents[pan]" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="error" id="panError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label>Salary Slip</label>
-      <input type="file" name="documents[salaryslip]" accept=".pdf,.jpg,.jpeg,.png">
-      <div class="error" id="salaryError"></div>
+          <div class="form-group">
+            <label>Salary Slip</label>
+            <input type="file" name="documents[salaryslip]" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="error" id="salaryError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label>Bank Statement</label>
-      <input type="file" name="documents[bankstatement]" accept=".pdf,.jpg,.jpeg,.png">
-      <div class="error" id="bankError"></div>
+          <div class="form-group">
+            <label>Bank Statement</label>
+            <input type="file" name="documents[bankstatement]" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="error" id="bankError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
 
-      <label>Address Proof</label>
-      <input type="file" name="documents[addressproof]" accept=".pdf,.jpg,.jpeg,.png">
-      <div class="error" id="addressProofError"></div>
+          <div class="form-group">
+            <label>Address Proof</label>
+            <input type="file" name="documents[addressproof]" accept=".pdf,.jpg,.jpeg,.png">
+            <div class="error" id="addressProofError" style="color: var(--accent); font-size: 0.8rem; margin-top: 0.5rem;"></div>
+          </div>
+        </div>
 
-      <button type="submit">Submit Loan Application</button>
-    </form>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Submit Application</button>
+      </form>
+    </div>
   </div>
 
+  <footer>
+    <p>&copy; 2025 Purwase Company | Designed for secure loan handling</p>
+  </footer>
+
   <script>
-    const loanForm = document.getElementById("loanForm");
+    document.addEventListener("DOMContentLoaded", function() {
+      const loanForm = document.getElementById("loanForm");
+      const container = document.querySelector(".container");
 
-    loanForm.addEventListener("submit", function (e) {
-      let valid = true;
+      if (!loanForm) return;
 
-      // Clear previous errors
-      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+      loanForm.addEventListener("submit", function (e) {
+        e.preventDefault(); // Stop page reload IMMEDIATELY
+        e.stopPropagation();
+        
+        // ... [Existing validation logic kept intact for security]
+        let valid = true;
+        document.querySelectorAll(".error").forEach(el => el.textContent = "");
+        document.querySelectorAll("input, select, textarea").forEach(el => el.style.borderColor = "");
 
-      // Loan Type
-      if (!document.getElementById("loan_type").value) {
-        document.getElementById("loanTypeError").textContent = "Please select a loan type.";
-        valid = false;
-      }
+        // Loan Type
+        if (!document.getElementById("loan_type").value) {
+          document.getElementById("loanTypeError").textContent = "Please select a loan type.";
+          document.getElementById("loan_type").style.borderColor = "var(--accent)";
+          valid = false;
+        }
 
-      // Amount
-      const amount = document.getElementById("amount").value.trim();
-      if (!/^\d+$/.test(amount) || Number(amount) < 10000) {
-        document.getElementById("amountError").textContent = "Amount must be number & ≥ 10000.";
-        valid = false;
-      }
+        // Amount
+        const amount = document.getElementById("amount").value.trim();
+        if (!/^\d+$/.test(amount) || Number(amount) < 10000) {
+          document.getElementById("amountError").textContent = "Amount must be number & ≥ 10000.";
+          document.getElementById("amount").style.borderColor = "var(--accent)";
+          valid = false;
+        }
 
-      // Tenure
-      const tenure = document.getElementById("tenure").value.trim();
-      if (!/^\d+$/.test(tenure) || Number(tenure) < 1 || Number(tenure) > 12) {
-        document.getElementById("tenureError").textContent = "Tenure must be between 1 to 12 months.";
-        valid = false;
-      }
+        // Tenure
+        const tenure = document.getElementById("tenure").value.trim();
+        if (!/^\d+$/.test(tenure) || Number(tenure) < 1 || Number(tenure) > 12) {
+          document.getElementById("tenureError").textContent = "Tenure must be between 1 to 12 months.";
+          document.getElementById("tenure").style.borderColor = "var(--accent)";
+          valid = false;
+        }
 
-      // Purpose
-      const purpose = document.getElementById("purpose").value.trim();
-      if (purpose.length < 10) {
-        document.getElementById("purposeError").textContent = "Purpose must be at least 10 characters.";
-        valid = false;
-      }
+        // Purpose
+        const purpose = document.getElementById("purpose").value.trim();
+        if (purpose.length < 10) {
+          document.getElementById("purposeError").textContent = "Purpose must be at least 10 characters.";
+          document.getElementById("purpose").style.borderColor = "var(--accent)";
+          valid = false;
+        }
 
-      // Income
-      const income = document.getElementById("income").value.trim();
-      if (!/^\d{4,}$/.test(income)) {
-        document.getElementById("incomeError").textContent = "Income must be number & min 4 digits.";
-        valid = false;
-      }
+        // Income
+        const income = document.getElementById("income").value.trim();
+        if (!/^\d{4,}$/.test(income)) {
+          document.getElementById("incomeError").textContent = "Income must be number & min 4 digits.";
+          document.getElementById("income").style.borderColor = "var(--accent)";
+          valid = false;
+        }
 
-      // Documents validation
-      if (!loanForm['documents[aadhar]'].files.length) {
-        document.getElementById("aadharError").textContent = "Aadhar required.";
-        valid = false;
-      }
-      if (!loanForm['documents[pan]'].files.length) {
-        document.getElementById("panError").textContent = "PAN required.";
-        valid = false;
-      }
-      if (!loanForm['documents[salaryslip]'].files.length) {
-        document.getElementById("salaryError").textContent = "Salary Slip required.";
-        valid = false;
-      }
-      if (!loanForm['documents[bankstatement]'].files.length) {
-        document.getElementById("bankError").textContent = "Bank Statement required.";
-        valid = false;
-      }
-      if (!loanForm['documents[addressproof]'].files.length) {
-        document.getElementById("addressProofError").textContent = "Address Proof required.";
-        valid = false;
-      }
-      if (!valid) e.preventDefault();
+        // Documents validation (Robust check via elements)
+        const docs = ["aadhar", "pan", "salaryslip", "bankstatement", "addressproof"];
+        const docNames = {
+          "aadhar": "Aadhar",
+          "pan": "PAN",
+          "salaryslip": "Salary Slip",
+          "bankstatement": "Bank Statement",
+          "addressproof": "Address Proof"
+        };
+
+        docs.forEach(doc => {
+          const fileInput = loanForm.elements[`documents[${doc}]`];
+          if (!fileInput || !fileInput.files.length) {
+            const errId = doc === "salaryslip" ? "salaryError" : (doc === "addressproof" ? "addressProofError" : `${doc}Error`);
+            const errEl = document.getElementById(errId) || document.getElementById(`${doc}Error`);
+            if (errEl) errEl.textContent = `${docNames[doc]} required.`;
+            valid = false;
+          }
+        });
+
+        if (!valid) {
+          const firstError = document.querySelector(".error:not(:empty)");
+          if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        // --- AJAX SUBMISSION ---
+        const submitBtn = loanForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = "Processing Application...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(loanForm);
+
+        fetch(loanForm.action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("Server responded with error");
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === 'success') {
+            container.innerHTML = `
+              <div class="card shadow-2xl animate-fade-in" style="text-align: center; padding: 4rem 2rem; border: 2px solid var(--primary);">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🏛️</div>
+                <h2 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 1rem;">Application Received!</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                  Your loan application has been successfully submitted and is now being reviewed by our specialists.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                  <a href="my_loans.php" class="btn btn-primary" style="text-decoration: none; padding: 1rem 2rem;">Track My Loan</a>
+                  <a href="customer_dashboard.php" class="btn btn-secondary" style="text-decoration: none; padding: 1rem 2rem;">Return to Dashboard</a>
+                </div>
+              </div>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            alert("❌ Error: " + data.message);
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("❌ System Error. Check your connection or try again later.");
+          submitBtn.textContent = originalBtnText;
+          submitBtn.disabled = false;
+        });
+      });
     });
   </script>
 
-</body>
 
-</html>
+
+</body>
+</html>

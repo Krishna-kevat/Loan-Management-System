@@ -1,0 +1,2 @@
+REACHABILITY TEST: If you can see this message, Apache is correctly looking at the folder: c:\wamp64\www\PHP_project\
+The issue is likely with the PHP redirection or subfolder structure.

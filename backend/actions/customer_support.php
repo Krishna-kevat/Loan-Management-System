@@ -17,16 +17,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO customer_support (customer_id, subject, message, status) 
             VALUES ('$customer_id', '$subject', '$message', 'Open')";
 
+    header('Content-Type: application/json');
     if (mysqli_query($conn, $sql)) {
-        // ✅ Redirect back with success message
-        echo'your application submitted succcessfully !';
-        exit();
+        echo json_encode(['status' => 'success', 'message' => 'your application submitted succcessfully !']);
     } else {
-        // ❌ Redirect back with error
-        header("Location: ../../frontend/customer_support.html?error=" . urlencode(mysqli_error($conn)));
-        exit();
+        echo json_encode(['status' => 'error', 'message' => 'Database Error: ' . mysqli_error($conn)]);
     }
+    exit();
 }
+
 
 mysqli_close($conn);
 ?>

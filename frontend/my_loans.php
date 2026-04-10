@@ -28,117 +28,131 @@ if (!$result) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Purwase My Loan Applications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Loan Status | Purwase</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme-switcher.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fa;
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #34495e;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            vertical-align: top;
-        }
-        th {
-            background: #34495e;
-            color: #fff;
-        }
-        tr:hover {
-            background: #f1f1f1;
-        }
-        .status-pending {
-            color: orange;
-            font-weight: bold;
-        }
-        .status-approved {
-            color: green;
-            font-weight: bold;
-        }
-        .status-rejected {
-            color: red;
-            font-weight: bold;
-        }
-        a {
+        .status-pending { color: var(--secondary); font-weight: 600; }
+        .status-approved { color: #4ade80; font-weight: 600; }
+        .status-rejected { color: var(--accent); font-weight: 600; }
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
             text-decoration: none;
-            color: #3498db;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
         }
-        .doc-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .doc-list li {
-            margin-bottom: 5px;
+        .doc-link:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
 
-<h2>📑 Purwase My Loan Applications</h2>
+  <header>
+    <h1>Purwase</h1>
+    <nav>
+      <ul>
+        <li><a href="customer_dashboard.php">Dashboard</a></li>
+        <li><a href="apply_loan.html">Apply Loan</a></li>
+        <li><a href="my_loans.php">My Loans</a></li>
+        <li><a href="customer_profile.php">Profile</a></li>
+        <li><a href="customer_support.html">Support</a></li>
+        <li><a href="../backend/logout/customer_logout.php" style="color: var(--accent);">Logout</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Toggle Theme">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-<?php if (mysqli_num_rows($result) > 0) { ?>
-    <table>
-        <tr>
-            <th>Loan ID</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Tenure</th>
-            <th>Purpose</th>
-            <th>Income</th>
-            <th>Status</th>
-            <th>Interest Rate (%)</th>
-            <th>Total Interest</th>
-            <th>Applied Date</th>
-            <th>Documents</th>
-        </tr>
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <tr>
-            <td><?php echo $row['loan_id']; ?></td>
-            <td><?php echo htmlspecialchars($row['loan_type']); ?></td>
-            <td>₹<?php echo number_format($row['amount']); ?></td>
-            <td><?php echo $row['tenure']; ?> months</td>
-            <td><?php echo htmlspecialchars($row['purpose']); ?></td>
-            <td>₹<?php echo number_format($row['income']); ?></td>
-            <td class="status-<?php echo strtolower($row['status']); ?>">
-                <?php echo $row['status']; ?>
-            </td>
-            <td><?php echo !empty($row['interest_rate']) ? $row['interest_rate'].'%' : '-'; ?></td>
-            <td><?php echo !empty($row['total_interest']) ? '₹ '.number_format($row['total_interest'], 2) : '-'; ?></td>
-            <td><?php echo date("d-m-Y", strtotime($row['applied_date'])); ?></td>
-            <td>
-                <?php 
-                    $docs = json_decode($row['document'], true);
-                    if ($docs && is_array($docs)) {
-                        echo "<ul class='doc-list'>";
-                        foreach ($docs as $docName => $docPath) {
-                            echo "<li><a href='" . htmlspecialchars($docPath) . "' target='_blank'>📎 " . ucfirst($docName) . "</a></li>";
-                        }
-                        echo "</ul>";
-                    } else {
-                        echo "-";
-                    }
-                ?>
-            </td>
-        </tr>
-        <?php } ?>
-    </table>
-<?php } else { ?>
-    <p style="text-align:center; color:red;">❌ You have not applied for any loans yet.</p>
-<?php } ?>
+  <div class="container" style="max-width: 1200px;">
+    <div class="hero" style="padding: 2rem 0; text-align: left;">
+      <h2>My Loan Applications</h2>
+      <p style="color: var(--text-muted);">Track the status of your current and past loan applications.</p>
+    </div>
+
+    <?php if (mysqli_num_rows($result) > 0) { ?>
+        <div class="table-container shadow-xl">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Loan ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Tenure</th>
+                        <th>Interest</th>
+                        <th>Applied Date</th>
+                        <th>Status</th>
+                        <th>Documents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <tr>
+                        <td style="font-weight: 600; color: var(--secondary);"><?php echo $row['loan_id']; ?></td>
+                        <td><?php echo htmlspecialchars($row['loan_type']); ?></td>
+                        <td style="font-weight: 600;">₹<?php echo number_format($row['amount']); ?></td>
+                        <td><?php echo $row['tenure']; ?> months</td>
+                        <td>
+                            <?php if (!empty($row['interest_rate'])) { ?>
+                                <div style="color: var(--text-main);"><?php echo $row['interest_rate']; ?>%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Int: ₹<?php echo number_format($row['total_interest'], 2); ?></div>
+                            <?php } else { echo "-"; } ?>
+                        </td>
+                        <td style="color: var(--text-muted);"><?php echo date("d M Y", strtotime($row['applied_date'])); ?></td>
+                        <td>
+                            <span class="status-<?php echo strtolower($row['status']); ?>">
+                                <?php echo $row['status']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <?php 
+                                $docs = json_decode($row['document'], true);
+                                if ($docs && is_array($docs)) {
+                                    foreach ($docs as $docName => $docPath) {
+                                        // Robust path correction
+                                        $actualDoc = (strpos($docPath, 'uploads/') === 0) ? '../' . $docPath : $docPath;
+                                        $actualDoc = str_replace('../../', '../', $actualDoc);
+                                        
+                                        echo "<a href='" . htmlspecialchars($actualDoc) . "' target='_blank' class='doc-link'>📎 " . ucfirst($docName) . "</a>";
+                                    }
+                                } else {
+                                    echo "-";
+                                }
+                            ?>
+
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    <?php } else { ?>
+        <div class="card" style="text-align: center; padding: 4rem;">
+            <p style="color: var(--accent); font-size: 1.25rem;">❌ You have not applied for any loans yet.</p>
+            <a href="apply_loan.html" class="btn btn-primary" style="margin-top: 2rem;">Apply Now</a>
+        </div>
+    <?php } ?>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Purwase Company | Customer Dashboard</p>
+  </footer>
 
 </body>
 </html>
 
 <?php mysqli_close($conn); ?>
+
